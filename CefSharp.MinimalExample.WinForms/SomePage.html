@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React!</title>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+</head>
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+        let index = 0;
+        class TODO extends React.Component {
+        constructor(props) {
+        super(props);
+        this.state = {TODOS : []};
+        }
+        addTODO() {
+        let TODOItem = this.refs.todo.value;
+        if(TODOItem.length != 0) {
+        let temparr = this.state.TODOS.concat({'id': index++, 'todo_item': TODOItem})
+        this.setState({TODOS: temparr});
+        }
+        this.refs.todo.value = "";
+        }
+        removeTODO(id) {
+        let temparr = this.state.TODOS;
+        temparr.splice(id, 1);
+        this.setState({TODOS: temparr});
+        }
+        render() {
+        let todoList = this.state.TODOS.map(function(todoItem, i) {
+        return (
+        <li key={todoItem.id}>
+            {todoItem.todo_item}
+            <span onClick={this.removeTODO.bind(this, i)} style={{'color': 'red'}}>x</span>
+        </li>
+        );
+        }.bind(this));
+        return (
+        <div>
+            Add a todo: <input type="text" name="todo" ref="todo" />
+            <input type="submit" value="submit" onClick={this.addTODO.bind(this)} />
+            <ul>
+                {todoList}
+            </ul>
+        </div>
+        );
+        }
+        };
+        ReactDOM.render(
+        <TODO />,
+        document.getElementById('example')
+        );
+    </script>
+</body>
+</html>
